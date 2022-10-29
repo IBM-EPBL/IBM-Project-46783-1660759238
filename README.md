@@ -1,12 +1,12 @@
 # IBM-Project-46783-1660759238
-#_**Personal Expense Tracker Application**__
+# _**Personal Expense Tracker Application**__
 
-#**Team Details:**
+# **Team Details:**
 
-#**HARSHIL S - Team Lead**
+# **HARSHIL S - Team Lead**
 
-#**ARUN D - Team Member 1**
+# **ARUN D - Team Member 1**
 
-#**ASWIN RAJ R - Team Member 2**
+# **ASWIN RAJ R - Team Member 2**
 
-#**GOKULAKRISHNAN S - Team Member 3**
+# **GOKULAKRISHNAN S - Team Member 3**
