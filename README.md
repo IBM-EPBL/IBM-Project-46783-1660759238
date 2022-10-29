@@ -1,5 +1,5 @@
 # IBM-Project-46783-1660759238
-# _**Personal Expense Tracker Application**__
+# _**Personal Expense Tracker Application**_
 
 # **Team Details:**
 
