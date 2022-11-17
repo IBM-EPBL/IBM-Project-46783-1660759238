@@ -1,73 +1,38 @@
 # -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 
 from flask import Flask, render_template, request, redirect, session 
-# from flask_mysqldb import MySQL
-# import MySQLdb.cursors
 import re
-
 from flask_db2 import DB2
 import ibm_db
 import ibm_db_dbi
 from sendemail import sendgridmail,sendmail
 
-# from gevent.pywsgi import WSGIServer
 import os
 
 
 app = Flask(__name__)
 
 app.secret_key = 'a'
-  
-# app.config['MYSQL_HOST'] = 'remotemysql.com'
-# app.config['MYSQL_USER'] = 'D2DxDUPBii'
-# app.config['MYSQL_PASSWORD'] = 'r8XBO4GsMz'
-# app.config['MYSQL_DB'] = 'D2DxDUPBii'
-"""
-dsn_hostname = "3883e7e4-18f5-4afe-be8c-fa31c41761d2.bs2io90l08kqb1od8lcg.databases.appdomain.cloud"
-dsn_uid = "sbb93800"
-dsn_pwd = "wobsVLm6ccFxcNLe"
-dsn_driver = "{IBM DB2 ODBC DRIVER}"
-dsn_database = "bludb"
-dsn_port = "31498"
-dsn_protocol = "tcpip"
 
-dsn = (
-    "DRIVER={0};"
-    "DATABASE={1};"
-    "HOSTNAME={2};"
-    "PORT={3};"
-    "PROTOCOL={4};"
-    "UID={5};"
-    "PWD={6};"
-).format(dsn_driver, dsn_database, dsn_hostname, dsn_port, dsn_protocol, dsn_uid, dsn_pwd)
-"""
-# app.config['DB2_DRIVER'] = '{IBM DB2 ODBC DRIVER}'
 app.config['database'] = 'Bludb'
 app.config['hostname'] = 'b0aebb68-94fa-46ec-a1fc-1c999edb6187.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud'
-app.config['port'] = '31498'
+app.config['port'] = '31249'
 app.config['protocol'] = 'TCPIP'
 app.config['uid'] = 'wzj62416'
-app.config['pwd'] = '9fCfvpu90w2QpX0I'
+app.config['pwd'] = 'bBA6Inkb4mHbf6e0'
 app.config['security'] = 'SSL'
 try:
     mysql = DB2(app)
 
-    conn_str='database=bludb;hostname=3883e7e4-18f5-4afe-be8c-fa31c41761d2.bs2io90l08kqb1od8lcg.databases.appdomain.cloud;port=31498;protocol=tcpip;\
-            uid=sbb93800;pwd=wobsVLm6ccFxcNLe;security=SSL'
+    conn_str='database=bludb;hostname=b0aebb68-94fa-46ec-a1fc-1c999edb6187.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;port=31249;protocol=tcpip;\
+            uid=wzj62416;pwd=bBA6Inkb4mHbf6e0;security=SSL'
     ibm_db_conn = ibm_db.connect(conn_str,'','')
         
     print("Database connected without any error !!")
 except:
     print("IBM DB Connection error   :     " + DB2.conn_errormsg())    
 
-# app.config['']
 
-# mysql = MySQL(app)
 
 
 #HOME--PAGE
@@ -108,12 +73,6 @@ def register():
             print("Break point4")
         except:
             print("No connection Established")      
-
-        # cursor = mysql.connection.cursor()
-        # with app.app_context():
-        #     print("Break point3")
-        #     cursor = ibm_db_conn.cursor()
-        #     print("Break point4")
         
         print("Break point5")
         sql = "SELECT * FROM register WHERE username = ?"
@@ -133,17 +92,7 @@ def register():
             print("The ID is : ", dictionary["USERNAME"])
             dictionary = ibm_db.fetch_assoc(res)
 
-        # dictionary = ibm_db.fetch_assoc(result)
-        # cursor.execute(stmt)
-
-        # account = cursor.fetchone()
-        # print(account)
-
-        # while ibm_db.fetch_row(result) != False:
-        #     # account = ibm_db.result(stmt)
-        #     print(ibm_db.result(result, "username"))
-
-        # print(dictionary["username"])    
+         
         print("break point 6")
         if account:
             msg = 'Username already exists !'
@@ -182,10 +131,7 @@ def login():
     if request.method == 'POST' :
         username = request.form['username']
         password = request.form['password']
-        # cursor = mysql.connection.cursor()
-        # cursor.execute('SELECT * FROM register WHERE username = % s AND password = % s', (username, password ),)
-        # account = cursor.fetchone()
-        # print (account)
+
         
         sql = "SELECT * FROM register WHERE username = ? and password = ?"
         stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -200,7 +146,7 @@ def login():
         res = ibm_db.exec_immediate(ibm_db_conn, param)
         dictionary = ibm_db.fetch_assoc(res)
 
-        # sendmail("hello sakthi","sivasakthisairam@gmail.com")
+ 
 
         if account:
             session['loggedin'] = True
@@ -246,10 +192,7 @@ def addexpense():
     p3 = date[14:]
     p4 = p1 + "-" + p2 + "." + p3 + ".00"
     print(p4)
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('INSERT INTO expenses VALUES (NULL,  % s, % s, % s, % s, % s, % s)', (session['id'] ,date, expensename, amount, paymode, category))
-    # mysql.connection.commit()
-    # print(date + " " + expensename + " " + amount + " " + paymode + " " + category)
+
 
     sql = "INSERT INTO expenses (userid, date, expensename, amount, paymode, category) VALUES (?, ?, ?, ?, ?, ?)"
     stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -283,6 +226,7 @@ def addexpense():
         dictionary = ibm_db.fetch_assoc(res)
 
     total=0
+    
     for x in expense:
           total += x[4]
 
@@ -298,7 +242,8 @@ def addexpense():
         dictionary = ibm_db.fetch_assoc(res)
         s = temp[0]
 
-    if total > s:
+
+    if int(total) > int(s):
         msg = "Hello " + session['username'] + " , " + "you have crossed the monthly limit of Rs. " + s + "/- !!!" + "\n" + "Thank you, " + "\n" + "Team Personal Expense Tracker."  
         sendmail(msg,session['email'])  
     
@@ -312,9 +257,7 @@ def addexpense():
 def display():
     print(session["username"],session['id'])
     
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('SELECT * FROM expenses WHERE userid = % s AND date ORDER BY `expenses`.`date` DESC',(str(session['id'])))
-    # expense = cursor.fetchall()
+
 
     param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " ORDER BY date DESC"
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -342,9 +285,7 @@ def display():
 
 @app.route('/delete/<string:id>', methods = ['POST', 'GET' ])
 def delete(id):
-    #  cursor = mysql.connection.cursor()
-    #  cursor.execute('DELETE FROM expenses WHERE  id = {0}'.format(id))
-    #  mysql.connection.commit()
+
 
     param = "DELETE FROM expenses WHERE  id = " + id
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -357,9 +298,7 @@ def delete(id):
 
 @app.route('/edit/<id>', methods = ['POST', 'GET' ])
 def edit(id):
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('SELECT * FROM expenses WHERE  id = %s', (id,))
-    # row = cursor.fetchall()
+
 
     param = "SELECT * FROM expenses WHERE  id = " + id
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -394,9 +333,7 @@ def update(id):
       paymode = request.form['paymode']
       category = request.form['category']
     
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute("UPDATE `expenses` SET `date` = % s , `expensename` = % s , `amount` = % s, `paymode` = % s, `category` = % s WHERE `expenses`.`id` = % s ",(date, expensename, amount, str(paymode), str(category),id))
-    #   mysql.connection.commit()
+
 
       p1 = date[0:10]
       p2 = date[11:13]

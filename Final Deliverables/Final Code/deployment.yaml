@@ -1,7 +1,7 @@
  apiVersion: apps/v1
  kind: Deployment
  metadata:
-   name: flask-node-deployment
+   name: sakthi-flask-node-deployment
  spec:
    replicas: 1
    selector:
@@ -13,8 +13,8 @@
          app: flasknode
      spec:
        containers:
-       - name: ibm-peta
-         image: registry.in.bluemix.net/flask-node/app
+       - name: flasknode
+         image: icr.io/sakthi_expense_tracker2/flask-template2
          imagePullPolicy: Always
          ports:
          - containerPort: 5000
