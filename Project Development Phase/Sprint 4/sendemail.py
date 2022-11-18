@@ -23,8 +23,15 @@ def sendgridmail(user,TEXT):
     subject = "Sending with SendGrid is Fun"
     content = Content("text/plain",TEXT)
     mail = Mail(from_email, to_email, subject, content)
+<<<<<<< HEAD
     mail_json = mail.get()
    
+=======
+
+    
+    mail_json = mail.get()
+    
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
     response = sg.client.mail.send.post(request_body=mail_json)
     print(response.status_code)
     print(response.headers)

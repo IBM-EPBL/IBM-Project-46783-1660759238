@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 applications:
- - name: Python Flask App IBCMR 2022-10-19
+ - name: Python Flask App IBCMR 2022-11-17
    random-route: true
    memory: 512M
-=======
-applications:
- - name: Python Flask App IBCMR 2022-10-19
-   random-route: true
-   memory: 512M
->>>>>>> 9b1615914e6c245a6b92d839b3ecc69c8aff0b1d
    disk_quota: 1.5G

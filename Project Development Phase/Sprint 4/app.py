@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 
 from flask import Flask, render_template, request, redirect, session 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 import re
-
 from flask_db2 import DB2
 import ibm_db
 import ibm_db_dbi
 from sendemail import sendgridmail,sendmail
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 import os
 
 
 app = Flask(__name__)
 
 app.secret_key = 'a'
+<<<<<<< HEAD
   
 
 """
@@ -43,27 +44,32 @@ dsn = (
 ).format(dsn_driver, dsn_database, dsn_hostname, dsn_port, dsn_protocol, dsn_uid, dsn_pwd)
 """
 # app.config['DB2_DRIVER'] = '{IBM DB2 ODBC DRIVER}'
+=======
+
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 app.config['database'] = 'Bludb'
 app.config['hostname'] = 'b0aebb68-94fa-46ec-a1fc-1c999edb6187.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud'
-app.config['port'] = '31498'
+app.config['port'] = '31249'
 app.config['protocol'] = 'TCPIP'
 app.config['uid'] = 'wzj62416'
-app.config['pwd'] = '9fCfvpu90w2QpX0I'
+app.config['pwd'] = 'bBA6Inkb4mHbf6e0'
 app.config['security'] = 'SSL'
 try:
     mysql = DB2(app)
 
-    conn_str='database=bludb;hostname=3883e7e4-18f5-4afe-be8c-fa31c41761d2.bs2io90l08kqb1od8lcg.databases.appdomain.cloud;port=31498;protocol=tcpip;\
-            uid=sbb93800;pwd=wobsVLm6ccFxcNLe;security=SSL'
+    conn_str='database=bludb;hostname=b0aebb68-94fa-46ec-a1fc-1c999edb6187.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;port=31249;protocol=tcpip;\
+            uid=wzj62416;pwd=bBA6Inkb4mHbf6e0;security=SSL'
     ibm_db_conn = ibm_db.connect(conn_str,'','')
         
     print("Database connected without any error !!")
 except:
     print("IBM DB Connection error   :     " + DB2.conn_errormsg())    
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 
-# mysql = MySQL(app)
 
 
 #HOME--PAGE
@@ -123,7 +129,11 @@ def register():
             print("The ID is : ", dictionary["USERNAME"])
             dictionary = ibm_db.fetch_assoc(res)
 
+<<<<<<< HEAD
 
+=======
+         
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
         print("break point 6")
         if account:
             msg = 'Username already exists !'
@@ -176,6 +186,10 @@ def login():
         res = ibm_db.exec_immediate(ibm_db_conn, param)
         dictionary = ibm_db.fetch_assoc(res)
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 
         if account:
             session['loggedin'] = True
@@ -221,6 +235,10 @@ def addexpense():
     p3 = date[14:]
     p4 = p1 + "-" + p2 + "." + p3 + ".00"
     print(p4)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 
     sql = "INSERT INTO expenses (userid, date, expensename, amount, paymode, category) VALUES (?, ?, ?, ?, ?, ?)"
     stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -285,6 +303,10 @@ def addexpense():
 def display():
     print(session["username"],session['id'])
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 
     param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " ORDER BY date DESC"
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -359,6 +381,10 @@ def update(id):
       amount = request.form['amount']
       paymode = request.form['paymode']
       category = request.form['category']
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 38886577501b0f0a93c8cf5545721bee8df32307
 
 
       p1 = date[0:10]
