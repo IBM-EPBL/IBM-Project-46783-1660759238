@@ -25,7 +25,7 @@
 
 ## 🧩 Project Demo
 
-https://user-images.githubusercontent.com/59676954/202418439-541d4742-31af-4766-9f4e-c2a208ca9a28.mp4
+https://user-images.githubusercontent.com/59676954/202781531-e2d8bc1c-1201-479d-9469-5a69c5361519.mp4
 
 
 ## 📒 Assignments
