@@ -1,0 +1,18 @@
+<<<<<<< HEAD
+Flask
+requests
+flask_db2
+DB2
+jsonify
+sendgrid
+Docker
+=======
+Flask
+requests
+flask_db2
+DB2
+jsonify
+sendgrid
+Docker
+>>>>>>> 9b1615914e6c245a6b92d839b3ecc69c8aff0b1d
+Kubernetes

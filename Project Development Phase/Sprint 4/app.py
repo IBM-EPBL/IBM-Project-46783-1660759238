@@ -6,8 +6,7 @@ This is a temporary script file.
 """
 
 from flask import Flask, render_template, request, redirect, session 
-# from flask_mysqldb import MySQL
-# import MySQLdb.cursors
+
 import re
 
 from flask_db2 import DB2
@@ -15,7 +14,7 @@ import ibm_db
 import ibm_db_dbi
 from sendemail import sendgridmail,sendmail
 
-# from gevent.pywsgi import WSGIServer
+
 import os
 
 
@@ -23,10 +22,7 @@ app = Flask(__name__)
 
 app.secret_key = 'a'
   
-# app.config['MYSQL_HOST'] = 'remotemysql.com'
-# app.config['MYSQL_USER'] = 'D2DxDUPBii'
-# app.config['MYSQL_PASSWORD'] = 'r8XBO4GsMz'
-# app.config['MYSQL_DB'] = 'D2DxDUPBii'
+
 """
 dsn_hostname = "3883e7e4-18f5-4afe-be8c-fa31c41761d2.bs2io90l08kqb1od8lcg.databases.appdomain.cloud"
 dsn_uid = "sbb93800"
@@ -65,7 +61,7 @@ try:
 except:
     print("IBM DB Connection error   :     " + DB2.conn_errormsg())    
 
-# app.config['']
+
 
 # mysql = MySQL(app)
 
@@ -108,12 +104,6 @@ def register():
             print("Break point4")
         except:
             print("No connection Established")      
-
-        # cursor = mysql.connection.cursor()
-        # with app.app_context():
-        #     print("Break point3")
-        #     cursor = ibm_db_conn.cursor()
-        #     print("Break point4")
         
         print("Break point5")
         sql = "SELECT * FROM register WHERE username = ?"
@@ -133,17 +123,7 @@ def register():
             print("The ID is : ", dictionary["USERNAME"])
             dictionary = ibm_db.fetch_assoc(res)
 
-        # dictionary = ibm_db.fetch_assoc(result)
-        # cursor.execute(stmt)
 
-        # account = cursor.fetchone()
-        # print(account)
-
-        # while ibm_db.fetch_row(result) != False:
-        #     # account = ibm_db.result(stmt)
-        #     print(ibm_db.result(result, "username"))
-
-        # print(dictionary["username"])    
         print("break point 6")
         if account:
             msg = 'Username already exists !'
@@ -158,8 +138,7 @@ def register():
             ibm_db.bind_param(stmt2, 2, email)
             ibm_db.bind_param(stmt2, 3, password)
             ibm_db.execute(stmt2)
-            # cursor.execute('INSERT INTO register VALUES (NULL, % s, % s, % s)', (username, email,password))
-            # mysql.connection.commit()
+
             msg = 'You have successfully registered !'
             return redirect("/login")
         return render_template('signup.html', msg = msg)
@@ -182,10 +161,7 @@ def login():
     if request.method == 'POST' :
         username = request.form['username']
         password = request.form['password']
-        # cursor = mysql.connection.cursor()
-        # cursor.execute('SELECT * FROM register WHERE username = % s AND password = % s', (username, password ),)
-        # account = cursor.fetchone()
-        # print (account)
+
         
         sql = "SELECT * FROM register WHERE username = ? and password = ?"
         stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -200,7 +176,6 @@ def login():
         res = ibm_db.exec_immediate(ibm_db_conn, param)
         dictionary = ibm_db.fetch_assoc(res)
 
-        # sendmail("hello sakthi","sivasakthisairam@gmail.com")
 
         if account:
             session['loggedin'] = True
@@ -246,10 +221,6 @@ def addexpense():
     p3 = date[14:]
     p4 = p1 + "-" + p2 + "." + p3 + ".00"
     print(p4)
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('INSERT INTO expenses VALUES (NULL,  % s, % s, % s, % s, % s, % s)', (session['id'] ,date, expensename, amount, paymode, category))
-    # mysql.connection.commit()
-    # print(date + " " + expensename + " " + amount + " " + paymode + " " + category)
 
     sql = "INSERT INTO expenses (userid, date, expensename, amount, paymode, category) VALUES (?, ?, ?, ?, ?, ?)"
     stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -314,9 +285,6 @@ def addexpense():
 def display():
     print(session["username"],session['id'])
     
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('SELECT * FROM expenses WHERE userid = % s AND date ORDER BY `expenses`.`date` DESC',(str(session['id'])))
-    # expense = cursor.fetchall()
 
     param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " ORDER BY date DESC"
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -344,9 +312,7 @@ def display():
 
 @app.route('/delete/<string:id>', methods = ['POST', 'GET' ])
 def delete(id):
-    #  cursor = mysql.connection.cursor()
-    #  cursor.execute('DELETE FROM expenses WHERE  id = {0}'.format(id))
-    #  mysql.connection.commit()
+
 
     param = "DELETE FROM expenses WHERE  id = " + id
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -359,9 +325,7 @@ def delete(id):
 
 @app.route('/edit/<id>', methods = ['POST', 'GET' ])
 def edit(id):
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('SELECT * FROM expenses WHERE  id = %s', (id,))
-    # row = cursor.fetchall()
+
 
     param = "SELECT * FROM expenses WHERE  id = " + id
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -395,10 +359,7 @@ def update(id):
       amount = request.form['amount']
       paymode = request.form['paymode']
       category = request.form['category']
-    
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute("UPDATE `expenses` SET `date` = % s , `expensename` = % s , `amount` = % s, `paymode` = % s, `category` = % s WHERE `expenses`.`id` = % s ",(date, expensename, amount, str(paymode), str(category),id))
-    #   mysql.connection.commit()
+
 
       p1 = date[0:10]
       p2 = date[11:13]
@@ -434,9 +395,7 @@ def limit():
 def limitnum():
      if request.method == "POST":
          number= request.form['number']
-        #  cursor = mysql.connection.cursor()
-        #  cursor.execute('INSERT INTO limits VALUES (NULL, % s, % s) ',(session['id'], number))
-        #  mysql.connection.commit()
+
 
          sql = "INSERT INTO limits (userid, limitss) VALUES (?, ?)"
          stmt = ibm_db.prepare(ibm_db_conn, sql)
@@ -449,10 +408,7 @@ def limitnum():
          
 @app.route("/limitn") 
 def limitn():
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('SELECT limitss FROM `limits` ORDER BY `limits`.`id` DESC LIMIT 1')
-    # x= cursor.fetchone()
-    # s = x[0]
+
     
     param = "SELECT id, limitss FROM limits WHERE userid = " + str(session['id']) + " ORDER BY id DESC LIMIT 1"
     res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -472,10 +428,7 @@ def limitn():
 
 @app.route("/today")
 def today():
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT TIME(date)   , amount FROM expenses  WHERE userid = %s AND DATE(date) = DATE(NOW()) ',(str(session['id'])))
-    #   texpense = cursor.fetchall()
-    #   print(texpense)
+
 
       param1 = "SELECT TIME(date) as tn, amount FROM expenses WHERE userid = " + str(session['id']) + " AND DATE(date) = DATE(current timestamp) ORDER BY date DESC"
       res1 = ibm_db.exec_immediate(ibm_db_conn, param1)
@@ -490,9 +443,6 @@ def today():
           print(temp)
           dictionary1 = ibm_db.fetch_assoc(res1)
       
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT * FROM expenses WHERE userid = % s AND DATE(date) = DATE(NOW()) AND date ORDER BY `expenses`.`date` DESC',(str(session['id'])))
-    #   expense = cursor.fetchall()
 
       param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " AND DATE(date) = DATE(current timestamp) ORDER BY date DESC"
       res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -559,10 +509,7 @@ def today():
 
 @app.route("/month")
 def month():
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT DATE(date), SUM(amount) FROM expenses WHERE userid= %s AND MONTH(DATE(date))= MONTH(now()) GROUP BY DATE(date) ORDER BY DATE(date) ',(str(session['id'])))
-    #   texpense = cursor.fetchall()
-    #   print(texpense)
+
 
       param1 = "SELECT DATE(date) as dt, SUM(amount) as tot FROM expenses WHERE userid = " + str(session['id']) + " AND MONTH(date) = MONTH(current timestamp) AND YEAR(date) = YEAR(current timestamp) GROUP BY DATE(date) ORDER BY DATE(date)"
       res1 = ibm_db.exec_immediate(ibm_db_conn, param1)
@@ -576,11 +523,7 @@ def month():
           texpense.append(temp)
           print(temp)
           dictionary1 = ibm_db.fetch_assoc(res1)
-      
-      
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT * FROM expenses WHERE userid = % s AND MONTH(DATE(date))= MONTH(now()) AND date ORDER BY `expenses`.`date` DESC',(str(session['id'])))
-    #   expense = cursor.fetchall()
+
 
       param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " AND MONTH(date) = MONTH(current timestamp) AND YEAR(date) = YEAR(current timestamp) ORDER BY date DESC"
       res = ibm_db.exec_immediate(ibm_db_conn, param)
@@ -646,10 +589,7 @@ def month():
          
 @app.route("/year")
 def year():
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT MONTH(date), SUM(amount) FROM expenses WHERE userid= %s AND YEAR(DATE(date))= YEAR(now()) GROUP BY MONTH(date) ORDER BY MONTH(date) ',(str(session['id'])))
-    #   texpense = cursor.fetchall()
-    #   print(texpense)
+
 
       param1 = "SELECT MONTH(date) as mn, SUM(amount) as tot FROM expenses WHERE userid = " + str(session['id']) + " AND YEAR(date) = YEAR(current timestamp) GROUP BY MONTH(date) ORDER BY MONTH(date)"
       res1 = ibm_db.exec_immediate(ibm_db_conn, param1)
@@ -664,10 +604,7 @@ def year():
           print(temp)
           dictionary1 = ibm_db.fetch_assoc(res1)
       
-      
-    #   cursor = mysql.connection.cursor()
-    #   cursor.execute('SELECT * FROM expenses WHERE userid = % s AND YEAR(DATE(date))= YEAR(now()) AND date ORDER BY `expenses`.`date` DESC',(str(session['id'])))
-    #   expense = cursor.fetchall()
+
 
       param = "SELECT * FROM expenses WHERE userid = " + str(session['id']) + " AND YEAR(date) = YEAR(current timestamp) ORDER BY date DESC"
       res = ibm_db.exec_immediate(ibm_db_conn, param)

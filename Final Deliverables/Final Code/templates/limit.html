@@ -1,0 +1,40 @@
+<<<<<<< HEAD
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<p> Currently your MONTHLY limit is ₹ {{y}} </p>
+
+
+<form action="/limitnum" method="POST">
+
+    <p> ENTER the MONTHLY LIMIT to avoid over EXPENSES</p> <br/>
+    <input type="number" name="number" required/> <span> 
+        <button class="btn btn-warning" type="submit">ENTER</button>
+    </span>
+    
+
+
+
+</form>
+=======
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<p> Currently your MONTHLY limit is ₹ {{y}} </p>
+
+
+<form action="/limitnum" method="POST">
+
+    <p> ENTER the MONTHLY LIMIT to avoid over EXPENSES</p> <br/>
+    <input type="number" name="number" required/> <span> 
+        <button class="btn btn-warning" type="submit">ENTER</button>
+    </span>
+    
+
+
+
+</form>
+>>>>>>> 9b1615914e6c245a6b92d839b3ecc69c8aff0b1d
+{% endblock %}
